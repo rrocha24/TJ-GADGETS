@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TJ GADGETS - Premium Technology & Gadgets</title>
+    <style>
+        @charset "utf-8";
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            /* Themed Colors: Sky Blue, Blue, White, Black */
+            --primary-sky: #00BFFF; /* Deep Sky Blue */
+            --primary-blue: #1D4ED8; /* Royal/Solid Blue */
+            --primary-white: #FFFFFF; /* White */
+            --dark-bg: #0a0f1c; /* Very Dark Blue/Black */
+            --darker-bg: #000000; /* Pure Black */
+            
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace, sans-serif;
+            background: var(--darker-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Enhanced Cyberpunk Background */
+        .cyber-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--darker-bg); overflow: hidden; z-index: -5; }
+        .cyber-gradient {
+            position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at 20% 30%, rgba(0, 191, 255, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(29, 78, 216, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 60% 20%, rgba(0, 191, 255, 0.1) 0%, transparent 50%);
+            animation: gradientRotate 30s linear infinite; filter: blur(40px);
+        }
+
+        @keyframes gradientRotate {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .matrix-rain { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; opacity: 0.15; }
+        .matrix-column {
+            position: absolute; top: -100vh; font-family: 'Courier New', monospace; font-size: 14px;
+            color: var(--primary-sky); text-shadow: 0 0 5px var(--primary-sky);
+            animation: matrixFall linear infinite; writing-mode: vertical-rl; text-orientation: upright;
+            background: linear-gradient(to bottom, transparent 0%, var(--primary-sky) 50%, transparent 100%);
+            -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .matrix-column:nth-child(3n) { color: var(--primary-blue); text-shadow: 0 0 5px var(--primary-blue); background: linear-gradient(to bottom, transparent 0%, var(--primary-blue) 50%, transparent 100%); }
+        .matrix-column:nth-child(5n) { color: var(--primary-white); text-shadow: 0 0 5px var(--primary-white); background: linear-gradient(to bottom, transparent 0%, var(--primary-white) 50%, transparent 100%); }
+
+        @keyframes matrixFall { 0% { transform: translateY(0); } 100% { transform: translateY(200vh); } }
+
+        .grid-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
+        .grid-lines {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(0, 191, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 191, 255, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px; animation: gridMove 20s linear infinite;
+        }
+        .grid-glow {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(29, 78, 216, 0.03) 2px, transparent 2px), linear-gradient(90deg, rgba(29, 78, 216, 0.03) 2px, transparent 2px);
+            background-size: 100px 100px; animation: gridMove 30s linear infinite reverse;
+        }
+        @keyframes gridMove { 0% { transform: translate(0, 0); } 100% { transform: translate(50px, 50px); } }
+
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -3; }
+        .particle {
+            position: absolute; width: 4px; height: 4px; background: var(--primary-sky);
+            border-radius: 50%; box-shadow: 0 0 10px var(--primary-sky);
+            animation: float 20s infinite; opacity: 0; transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .particle:nth-child(odd) { background: var(--primary-blue); box-shadow: 0 0 10px var(--primary-blue); animation-duration: 25s; }
+
+        @keyframes float { 0% { transform: translateY(100vh) translateX(0); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100vh) translateX(100px); opacity: 0; } }
+
+        .orb { position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.5; animation: orbFloat 20s ease-in-out infinite; pointer-events: none; z-index: -4; }
+        .orb1 { width: 300px; height: 300px; background: var(--primary-sky); top: 10%; left: -150px; animation-delay: 0s; }
+        .orb2 { width: 400px; height: 400px; background: var(--primary-blue); bottom: 10%; right: -200px; animation-delay: 5s; }
+        .orb3 { width: 250px; height: 250px; background: var(--primary-white); top: 50%; left: 50%; animation-delay: 10s; opacity: 0.1; }
+
+        @keyframes orbFloat { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(100px, -50px) scale(1.1); } 66% { transform: translate(-50px, 100px) scale(0.9); } }
+
+        .scanlines { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; }
+        .scanlines::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(transparent 0%, rgba(0, 191, 255, 0.03) 50%, transparent 100%);
+            background-size: 100% 4px; animation: scanline 8s linear infinite;
+        }
+        .scanlines::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.8) 100%); pointer-events: none; }
+        @keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+
+        .noise-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.03; z-index: -1; pointer-events: none;
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(255, 255, 255, 0.03) 2px, rgba(255, 255, 255, 0.03) 4px),
+                              repeating-linear-gradient(-45deg, transparent, transparent 2px, rgba(0, 191, 255, 0.02) 2px, rgba(0, 191, 255, 0.02) 4px);
+        }
+
+        /* Navigation */
+        nav { position: fixed; top: 0; width: 100%; padding: 1rem 2rem; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-color); z-index: 10000; transition: all 0.3s ease; }
+        .nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .mobile-menu-button { display: none; background: none; border: none; color: var(--primary-sky); font-size: 1.5rem; cursor: pointer; position: relative; width: 30px; height: 30px; transition: all 0.3s ease; }
+        .mobile-menu-button:hover { color: var(--primary-white); transform: scale(1.1); }
+        .hamburger { position: relative; width: 25px; height: 20px; margin: auto; }
+        .hamburger span { display: block; position: absolute; height: 2px; width: 100%; background: var(--primary-sky); border-radius: 1px; transition: all 0.25s ease-in-out; box-shadow: 0 0 5px var(--primary-sky); transform-origin: center; }
+        .hamburger span:nth-child(1) { top: 0px; } .hamburger span:nth-child(2) { top: 9px; } .hamburger span:nth-child(3) { top: 18px; }
+        .mobile-menu-button.active .hamburger span:nth-child(1) { top: 9px; transform: rotate(135deg); background: var(--primary-white); }
+        .mobile-menu-button.active .hamburger span:nth-child(2) { opacity: 0; left: -25px; }
+        .mobile-menu-button.active .hamburger span:nth-child(3) { top: 9px; transform: rotate(-135deg); background: var(--primary-white); }
+
+        .mobile-menu { position: fixed; top: 78px; right: -100%; width: 80%; max-width: 350px; height: calc(100vh - 78px); background: var(--darker-bg); backdrop-filter: blur(20px); border-left: 2px solid var(--border-color); z-index: 9999; transition: right 0.4s cubic-bezier(0.23, 1, 0.32, 1); overflow-y: auto; box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; }
+        .mobile-menu.active { right: 0; }
+        .mobile-menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.7); z-index: 9998; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+        .mobile-menu-overlay.active { opacity: 1; visibility: visible; }
+        .mobile-menu-header { padding: 2rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+        
+        .mobile-menu-logo, .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary-sky); text-shadow: 0 0 15px var(--primary-sky); text-decoration: none; display: inline-block; transition: all 0.3s ease; }
+        .mobile-menu-logo::before, .logo::before { content: '>'; margin-right: 0.5rem; color: var(--primary-white); transition: all 0.3s ease; }
+        .mobile-menu-logo::after, .logo::after { content: '_'; animation: blink 1s infinite; color: var(--primary-sky); }
+        @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+
+        .mobile-menu-close { background: none; border: none; color: var(--primary-sky); font-size: 1.5rem; cursor: pointer; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
+        .mobile-menu-close:hover { color: var(--primary-white); transform: rotate(90deg); }
+        .mobile-menu-nav { padding: 0; flex-grow: 1; }
+        .mobile-menu-nav ul { list-style: none; padding: 0; margin: 0; }
+        .mobile-menu-nav a { display: block; padding: 1.5rem 2rem; color: var(--text-secondary); text-decoration: none; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 1.1rem; transition: all 0.3s ease; position: relative; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .mobile-menu-nav a:hover { color: var(--primary-sky); background: rgba(0, 191, 255, 0.05); padding-left: 3rem; text-shadow: 0 0 10px var(--primary-sky); }
+        .mobile-menu-nav a::before { content: '>'; position: absolute; left: 2rem; opacity: 0; transform: translateX(-10px); transition: all 0.3s ease; color: var(--primary-white); }
+        .mobile-menu-nav a:hover::before { opacity: 1; transform: translateX(0); }
+        
+        .mobile-menu-cta { padding: 2rem; flex-shrink: 0; border-bottom: 1px solid var(--border-color); }
+        .cyber-button { display: inline-block; background: linear-gradient(135deg, var(--primary-sky), var(--primary-blue)); color: var(--darker-bg); padding: 1rem 2rem; text-decoration: none; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s ease; clip-path: polygon(15px 0%, 100% 0%, calc(100% - 15px) 100%, 0% 100%); box-shadow: 0 0 20px rgba(0, 191, 255, 0.3); width: 100%; text-align: center; }
+        .cyber-button:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(0, 191, 255, 0.5); }
+
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (min-width: 769px) {
+            .mobile-menu-button { display: none !important; }
+            .nav-container { flex-direction: row; align-items: center; gap: 0; }
+            .nav-links { flex: 1; display: flex; flex-direction: row; justify-content: center; margin: 0 2rem; max-width: none; }
+            .nav-links a { padding: 0; border-bottom: none; font-size: 0.9rem; }
+            .nav-links a:hover { background: none; transform: none; padding-left: 0; }
+            .nav-links a::before { display: none; }
+            .cyber-button { width: auto; max-width: none; }
+        }
+
+        .logo { font-size: 1.8rem; }
+        .nav-links { display: flex; list-style: none; gap: 2.5rem; }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: all 0.3s ease; position: relative; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; }
+        .nav-links a:hover { color: var(--primary-sky); text-shadow: 0 0 10px var(--primary-sky); }
+        .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-sky), var(--primary-blue)); transition: width 0.3s ease; box-shadow: 0 0 10px var(--primary-sky); }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* Hero Section */
+        .hero { padding: 150px 2rem 100px; text-align: center; position: relative; min-height: 100vh; display: flex; align-items: center; }
+        .hero-container { max-width: 1400px; margin: 0 auto; width: 100%; }
+        .hero-title { font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 3px; position: relative; line-height: 1.2; }
+        .hero-nexus { background: linear-gradient(135deg, var(--primary-sky), var(--primary-white)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; transition: all 0.3s ease; animation: cyanPulse 3s ease-in-out infinite; position: relative; }
+        .hero-flow { background: linear-gradient(135deg, var(--primary-blue), var(--primary-sky)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin-left: 0.2em; display: inline-block; transition: all 0.3s ease; animation: purplePulse 3s ease-in-out infinite; animation-delay: 1.5s; position: relative; }
+        
+        @keyframes cyanPulse { 0%, 100% { filter: brightness(1) drop-shadow(0 0 15px rgba(0, 191, 255, 0.6)); transform: translateY(0) scale(1); } 50% { filter: brightness(1.1) drop-shadow(0 0 25px rgba(0, 191, 255, 0.8)); transform: translateY(-2px) scale(1.01); } }
+        @keyframes purplePulse { 0%, 100% { filter: brightness(1) drop-shadow(0 0 15px rgba(29, 78, 216, 0.6)); transform: translateY(0) scale(1); } 50% { filter: brightness(1.1) drop-shadow(0 0 25px rgba(29, 78, 216, 0.8)); transform: translateY(-2px) scale(1.01); } }
+
+        .hero-subtitle { font-size: 1.5rem; color: var(--text-secondary); margin-bottom: 3rem; max-width: 800px; margin-left: auto; margin-right: auto; font-weight: 300; opacity: 0.9; background: linear-gradient(135deg, var(--primary-white), var(--primary-grey)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-buttons { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; }
+        
+        .btn-primary, .btn-secondary { padding: 1.2rem 3rem; text-decoration: none; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; position: relative; overflow: hidden; transition: all 0.3s ease; clip-path: polygon(20px 0%, 100% 0%, calc(100% - 20px) 100%, 0% 100%); }
+        .btn-primary { background: linear-gradient(135deg, var(--primary-sky), var(--primary-blue)); color: var(--darker-bg); border: none; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(0, 191, 255, 0.4); }
+        .btn-secondary { background: transparent; color: var(--primary-sky); border: 2px solid var(--primary-sky); }
+        .btn-secondary:hover { background: var(--primary-sky); color: var(--darker-bg); box-shadow: 0 0 30px var(--primary-sky); }
+
+        /* Shared Sections */
+        .section { padding: 100px 2rem; position: relative; }
+        .section-container { max-width: 1400px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-title { font-size: 2.8rem; font-weight: 800; color: var(--primary-sky); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem; position: relative; text-shadow: 0 0 20px rgba(0, 191, 255, 0.5); }
+        .section-title::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 100px; height: 3px; background: linear-gradient(90deg, var(--primary-sky), var(--primary-blue)); box-shadow: 0 0 20px var(--primary-sky); }
+        .section-subtitle { font-size: 1.2rem; color: var(--text-secondary); max-width: 800px; margin: 0 auto; }
+
+        /* About Us & Text Blocks */
+        .about-text-block { background: var(--card-bg); border: 1px solid var(--border-color); padding: 3rem; margin-bottom: 2rem; backdrop-filter: blur(10px); clip-path: polygon(30px 0%, 100% 0%, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0% 100%, 0% 30px); }
+        .about-text-block p { color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem; font-size: 1.1rem; }
+        .about-text-block h3 { color: var(--primary-sky); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Core Values / Features */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
+        .feature-card { background: var(--card-bg); border: 1px solid var(--border-color); padding: 2.5rem; position: relative; transition: all 0.4s ease; backdrop-filter: blur(10px); clip-path: polygon(20px 0%, 100% 0%, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0% 100%, 0% 20px); }
+        .feature-card:hover { transform: translateY(-10px); box-shadow: 0 20px 50px rgba(0, 191, 255, 0.2); }
+        .feature-icon { width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary-sky), var(--primary-blue)); display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; font-size: 1.5rem; clip-path: polygon(15px 0%, 100% 0%, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0% 100%, 0% 15px); box-shadow: 0 0 30px rgba(0, 191, 255, 0.5); }
+        .feature-card h3 { font-size: 1.3rem; font-weight: 700; color: var(--primary-sky); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+        .feature-card p { color: var(--text-secondary); line-height: 1.8; font-size: 0.95rem;}
+
+        /* Products & Categories (Pricing Style) */
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 3rem; }
+        .pricing-card { background: var(--card-bg); border: 1px solid var(--border-color); padding: 3rem; position: relative; transition: all 0.4s ease; backdrop-filter: blur(10px); clip-path: polygon(30px 0%, 100% 0%, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0% 100%, 0% 30px); }
+        .pricing-card.featured { border-color: var(--primary-sky); background: rgba(0, 191, 255, 0.05); transform: scale(1.05); box-shadow: 0 0 50px rgba(0, 191, 255, 0.15); }
+        .pricing-card.featured::before { content: 'BEST SELLERS'; position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--primary-sky), var(--primary-blue)); color: var(--primary-white); padding: 0.5rem 2rem; font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%); }
+        .pricing-card:hover { transform: translateY(-10px); box-shadow: 0 20px 50px rgba(0, 191, 255, 0.2); }
+        .pricing-card.featured:hover { transform: scale(1.05) translateY(-10px); }
+        .plan-name { font-size: 1.5rem; font-weight: 700; color: var(--primary-sky); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2rem; text-shadow: 0 0 15px rgba(0, 191, 255, 0.5); }
+        .plan-features { list-style: none; margin-bottom: 3rem; text-align: left; }
+        .plan-features li { padding: 1rem 0; color: var(--text-secondary); position: relative; padding-left: 2rem; border-bottom: 1px solid rgba(0, 191, 255, 0.1); }
+        .plan-features li::before { content: '▶'; position: absolute; left: 0; color: var(--primary-sky); font-size: 0.8rem; }
+
+        /* Stats (Why Choose Us) */
+        .stats { padding: 60px 2rem; background: rgba(0, 191, 255, 0.02); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 3rem; text-align: center; }
+        .stat-number { font-size: 3.5rem; font-weight: 900; background: linear-gradient(135deg, var(--primary-sky), var(--primary-blue)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; display: block; margin-bottom: 0.5rem; filter: drop-shadow(0 0 20px rgba(0, 191, 255, 0.3)); }
+        .stat-label { font-size: 1.1rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Contact Section */
+        .contact-form-wrapper { max-width: 600px; margin: 0 auto; }
+        .contact-form { background: var(--card-bg); border: 1px solid var(--border-color); padding: 3rem; backdrop-filter: blur(10px); clip-path: polygon(30px 0%, 100% 0%, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0% 100%, 0% 30px); box-shadow: 0 0 30px rgba(0, 191, 255, 0.1); }
+        .form-group { margin-bottom: 2rem; }
+        .form-group label { display: block; color: var(--primary-sky); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; margin-bottom: 0.8rem; text-shadow: 0 0 10px var(--primary-sky); }
+        .form-group input, .form-group textarea { width: 100%; padding: 1rem 1.5rem; background: rgba(0, 191, 255, 0.05); border: 1px solid var(--border-color); color: var(--text-primary); font-family: inherit; font-size: 1rem; transition: all 0.3s ease; clip-path: polygon(10px 0%, 100% 0%, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0% 100%, 0% 10px); }
+        .form-group input::placeholder, .form-group textarea::placeholder { color: var(--text-secondary); opacity: 0.7; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--primary-sky); background: rgba(0, 191, 255, 0.08); box-shadow: 0 0 20px rgba(0, 191, 255, 0.3); }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        .btn-submit { width: 100%; cursor: pointer; font-size: 1rem; margin-top: 1rem; border: none; transition: all 0.3s ease; }
+
+        /* Footer */
+        .footer { padding: 60px 2rem 40px; border-top: 1px solid var(--border-color); text-align: center; background: rgba(0, 0, 0, 0.5); margin-top: 40px; }
+        .footer-content { max-width: 1400px; margin: 0 auto; }
+        .footer-links { margin-bottom: 2rem; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+        .footer-links a { color: var(--text-secondary); text-decoration: none; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; transition: all 0.3s ease; padding: 0 0.5rem; }
+        .footer-links a:hover { color: var(--primary-sky); text-shadow: 0 0 10px var(--primary-sky); transform: translateY(-2px); }
+        .footer-separator { color: var(--primary-sky); opacity: 0.5; font-size: 0.8rem; margin: 0 0.2rem; }
+        .footer-bottom { color: var(--text-secondary); font-size: 0.9rem; }
+
+        /* Animations & Responsive */
+        .fade-up { opacity: 0; transform: translateY(50px); transition: all 0.8s ease; }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+        .data-streams { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -3; pointer-events: none; }
+        .data-stream { position: absolute; height: 1px; background: linear-gradient(90deg, transparent, var(--primary-sky), transparent); opacity: 0; animation: dataFlow 3s ease-in-out infinite; }
+        .data-stream:nth-child(odd) { background: linear-gradient(90deg, transparent, var(--primary-blue), transparent); animation-duration: 4s; }
+        @keyframes dataFlow { 0% { width: 0; opacity: 0; transform: translateX(0); } 50% { width: 300px; opacity: 0.8; } 100% { width: 0; opacity: 0; transform: translateX(100vw); } }
+
+        @media (max-width: 768px) {
+            .mobile-menu-button { display: block !important; }
+            .nav-links, .nav-bottom .cyber-button { display: none; }
+            .hero-title { font-size: 2.5rem; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+            .btn-primary, .btn-secondary { width: 100%; max-width: 300px; }
+            .pricing-grid, .features-grid { grid-template-columns: 1fr; }
+            .pricing-card.featured { transform: none; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .contact { padding: 80px 1rem; }
+            .matrix-rain, .data-streams, .noise-overlay { display: none; }
+            .orb { filter: blur(100px); opacity: 0.3; }
+        }
+    </style>
+</head>
+<body id="top">
+    <!-- Background Elements -->
+    <div class="cyber-bg"><div class="cyber-gradient"></div><div class="matrix-rain" id="matrixRain"></div></div>
+    <div class="particles" id="particlesContainer"></div>
+    <div class="data-streams" id="dataStreams"></div>
+    <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
+    <div class="grid-overlay"><div class="grid-lines"></div><div class="grid-glow"></div></div>
+    <div class="scanlines"></div><div class="noise-overlay"></div>
+    
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#top" class="logo">TJ GADGETS</a>
+            <ul class="nav-links">
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#values">Core Values</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="nav-bottom">
+                <a href="#products" class="cyber-button">Shop Now</a>
+            </div>
+            <button class="mobile-menu-button" id="mobileMenuBtn">
+                <div class="hamburger"><span></span><span></span><span></span></div>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <a href="#top" class="mobile-menu-logo">TJ GADGETS</a>
+            <button class="mobile-menu-close" id="mobileMenuClose">✕</button>
+        </div>
+        <div class="mobile-menu-cta"><a href="#products" class="cyber-button">Shop Now</a></div>
+        <nav class="mobile-menu-nav">
+            <ul>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#products">Products</a></li>
+                <li><a href="#values">Core Values</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <h1 class="hero-title">
+                <span class="hero-nexus">TJ</span><span class="hero-flow">GADGETS</span>
+            </h1>
+            <p class="hero-subtitle">Bridging the gap between people and quality technology across Nigeria and beyond. Your trusted destination for smartphones, laptops, and digital devices.</p>
+            <div class="hero-buttons">
+                <a href="#products" class="btn-primary">Explore Products</a>
+                <a href="#about" class="btn-secondary">Our Vision</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats / Highlights Section -->
+    <section class="stats fade-up" id="stats">
+        <div class="stats-container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Genuine Products</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">Reliable Support</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">Premium</span>
+                    <span class="stat-label">Shopping Experience</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">Top 1</span>
+                    <span class="stat-label">Trusted Tech Brand</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section fade-up" id="about">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">About Us</h2>
+                <p class="section-subtitle">Bridging the gap between people and quality technology</p>
+            </div>
+            
+            <div class="about-text-block">
+                <p><strong>TJ GADGETS</strong> is a trusted technology and gadget brand dedicated to providing high-quality smartphones, laptops, accessories, and digital devices to customers across Nigeria and beyond. Founded with a vision to make genuine technology products accessible, affordable, and reliable, we focus on delivering value, trust, and excellent customer service.</p>
+                <p>We understand that technology is no longer a luxury but a necessity for students, professionals, entrepreneurs, content creators, gamers, and everyday users. Every product we offer is carefully selected to meet modern standards of performance, durability, and innovation.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Our Mission</h3>
+                    <p>To provide authentic gadgets and technology solutions while building lasting relationships through trust, transparency, and exceptional customer service.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👁️</div>
+                    <h3>Our Vision</h3>
+                    <p>To become one of Nigeria's most trusted and recognized gadget brands, with both a strong online presence and physical retail stores that provide customers with a premium technology shopping experience.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products & Services -->
+    <section class="section pricing fade-up" id="products">
+        <div class="section-container pricing-container">
+            <div class="section-header">
+                <h2 class="section-title">Products & Services</h2>
+                <p class="section-subtitle">Discover our wide range of premium technology solutions</p>
+            </div>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="plan-name">Smart Devices</div>
+                    <ul class="plan-features">
+                        <li>Smartphones</li>
+                        <li>Laptops</li>
+                        <li>Tablets</li>
+                        <li>Smartwatches</li>
+                    </ul>
+                    <a href="#contact" class="btn-secondary" style="display:block; text-align:center;">Inquire Now</a>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <div class="plan-name">Accessories</div>
+                    <ul class="plan-features">
+                        <li>Wireless Earbuds & Headphones</li>
+                        <li>Phone Accessories</li>
+                        <li>Laptop Accessories</li>
+                        <li>Gaming Accessories</li>
+                    </ul>
+                    <a href="#contact" class="btn-primary" style="display:block; text-align:center;">View Collection</a>
+                </div>
+                
+                <div class="pricing-card">
+                    <div class="plan-name">Power & Network</div>
+                    <ul class="plan-features">
+                        <li>Power Banks</li>
+                        <li>Chargers & Cables</li>
+                        <li>Networking Devices</li>
+                        <li>Other Consumer Electronics</li>
+                    </ul>
+                    <a href="#contact" class="btn-secondary" style="display:block; text-align:center;">Inquire Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Values Section -->
+    <section class="section features fade-up" id="values">
+        <div class="section-container features-container">
+            <div class="section-header">
+                <h2 class="section-title">Our Core Values</h2>
+                <p class="section-subtitle">The principles that guide our professional business practices</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🤝</div>
+                    <h3>Trust</h3>
+                    <p>We prioritize honesty and transparency in every transaction. You can count on our growing reputation for trust and credibility.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💎</div>
+                    <h3>Quality</h3>
+                    <p>We provide genuine products from reputable manufacturers and brands, ensuring modern standards of performance.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">❤️</div>
+                    <h3>Customer Satisfaction</h3>
+                    <p>Our customers remain at the center of everything we do. We are committed to your absolute satisfaction.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <h3>Innovation</h3>
+                    <p>We continuously adapt to technological trends to meet the evolving and dynamic needs of our modern customers.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Reliability</h3>
+                    <p>We deliver consistent service and dependable support, providing fast responses to inquiries before and after purchase.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Brand Personality</h3>
+                    <p>We are Professional, Modern, Innovative, Reliable, Customer-focused, Technology-driven, and above all, Trustworthy.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section contact fade-up" id="contact">
+        <div class="section-container contact-container">
+            <div class="section-header">
+                <h2 class="section-title">Contact TJ GADGETS</h2>
+                <p class="section-subtitle">Reach out for inquiries, orders, and reliable customer support.</p>
+            </div>
+            
+            <div class="contact-form-wrapper">
+                <div class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Your Message or Inquiry</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Let us know which gadget you're looking for..." required></textarea>
+                    </div>
+                    <button type="button" class="btn-primary btn-submit">Send Inquiry</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#about">About Us</a>
+                <span class="footer-separator">•</span>
+                <a href="#products">Products</a>
+                <span class="footer-separator">•</span>
+                <a href="#values">Core Values</a>
+                <span class="footer-separator">•</span>
+                <a href="#contact">Contact Support</a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 TJ GADGETS. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize mobile menu functionality
+        function initializeMobileMenu() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+            const mobileMenuClose = document.getElementById('mobileMenuClose');
+            const mobileMenuLinks = document.querySelectorAll('.mobile-menu-nav a, .mobile-menu-cta a, .mobile-menu-logo');
+
+            function openMobileMenu() {
+                mobileMenuBtn.classList.add('active');
+                mobileMenu.classList.add('active');
+                mobileMenuOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeMobileMenu() {
+                mobileMenuBtn.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                mobileMenuOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            mobileMenuBtn.addEventListener('click', (e) => {
+                e.preventDefault(); e.stopPropagation();
+                mobileMenu.classList.contains('active') ? closeMobileMenu() : openMobileMenu();
+            });
+
+            mobileMenuClose.addEventListener('click', closeMobileMenu);
+            mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+            mobileMenuLinks.forEach(link => link.addEventListener('click', closeMobileMenu));
+        }
+
+        document.addEventListener('DOMContentLoaded', initializeMobileMenu);
+
+        // Generate Matrix Rain Effect
+        function generateMatrixRain() {
+            const matrixRain = document.getElementById('matrixRain');
+            if(!matrixRain) return;
+            const characters = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const columns = Math.floor(window.innerWidth / 20);
+            for (let i = 0; i < columns; i++) {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                column.style.left = `${i * 20}px`;
+                column.style.animationDuration = `${Math.random() * 5 + 10}s`;
+                column.style.animationDelay = `${Math.random() * 5}s`;
+                let text = '';
+                for (let j = 0; j < 15; j++) text += characters[Math.floor(Math.random() * characters.length)] + ' ';
+                column.textContent = text;
+                matrixRain.appendChild(column);
+            }
+        }
+
+        // Generate Particles & Streams
+        function generateParticles() {
+            const container = document.getElementById('particlesContainer');
+            for (let i = 0; i < 50; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = `${Math.random() * 100}%`;
+                p.style.animationDelay = `${Math.random() * 20}s`;
+                p.style.animationDuration = `${Math.random() * 10 + 20}s`;
+                container.appendChild(p);
+            }
+        }
+
+        function generateDataStreams() {
+            const streams = document.getElementById('dataStreams');
+            for (let i = 0; i < 10; i++) {
+                const s = document.createElement('div');
+                s.className = 'data-stream';
+                s.style.top = `${Math.random() * 100}%`;
+                s.style.left = `-300px`;
+                s.style.animationDelay = `${Math.random() * 5}s`;
+                s.style.transform = `rotate(${Math.random() * 30 - 15}deg)`;
+                streams.appendChild(s);
+            }
+        }
+
+        generateMatrixRain(); generateParticles(); generateDataStreams();
+
+        // Orb tracking
+        let mouseTimer;
+        document.addEventListener('mousemove', (e) => {
+            if (!mouseTimer) {
+                mouseTimer = setTimeout(() => {
+                    const orbs = document.querySelectorAll('.orb');
+                    orbs.forEach((orb, index) => {
+                        const speed = (index + 1) * 0.02;
+                        const x = (e.clientX - window.innerWidth / 2) * speed;
+                        const y = (e.clientY - window.innerHeight / 2) * speed;
+                        orb.style.transform = `translate(${x}px, ${y}px)`;
+                    });
+                    mouseTimer = null;
+                }, 16);
+            }
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href && href.length > 1) {
+                    e.preventDefault();
+                    if(href === '#top') window.scrollTo({top: 0, behavior: 'smooth'});
+                    else {
+                        const target = document.querySelector(href);
+                        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+
+        // Nav scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(0, 0, 0, 0.9)';
+                nav.style.boxShadow = '0 0 30px rgba(0, 191, 255, 0.2)';
+            } else {
+                nav.style.background = 'rgba(0, 0, 0, 0.9)';
+                nav.style.boxShadow = 'none';
+            }
+        });
+
+        // Scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
+        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        // Submit Button effect
+        const submitBtn = document.querySelector('.btn-submit');
+        if(submitBtn){
+            submitBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const n = document.getElementById('name').value;
+                const m = document.getElementById('email').value;
+                if(n && m) {
+                    this.textContent = 'SENDING...';
+                    setTimeout(() => {
+                        this.textContent = 'INQUIRY SENT';
+                        document.getElementById('name').value = '';
+                        document.getElementById('email').value = '';
+                        document.getElementById('message').value = '';
+                        setTimeout(() => this.textContent = 'Send Inquiry', 3000);
+                    }, 1500);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
